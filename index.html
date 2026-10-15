@@ -3,7 +3,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--HEAD-->
 <title>Maisie's One Liner Archive</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
@@ -1376,12 +1375,7 @@ function wire(){
       return store.list().then(function(rows){return Promise.all(rows.map(function(r){return open_(r).then(function(o){return{id:r.id,ts:r.ts||0,q:o.q,d:o.d,n:o.n}},function(){return null})}))})
         .then(function(xs){items=xs.filter(Boolean);render()})}
     load(local);
-    if(window.claude&&claude.use){Promise.all([claude.use('db'),claude.use('user')]).then(function(r){var db=r[0],user=r[1];if(!db||!user)return;
-      return user.id().then(function(uid){if(!uid)return;var col=db.collection('data/users/'+uid);
-        var remote={where:'your account, privately (follows you to other devices)',
-          list:function(){return col.get().then(function(s){return s.docs.map(function(d){return Object.assign({id:d.id},d.data())})})},
-          put:function(id,r){return col.doc(id).set(r)},del:function(id){return col.doc(id).delete()}};
-        return load(remote)})}).catch(function(){})}
+    
     function sendIt(){var q=nq.value.trim();if(!q||!st||!KEYRAW)return;var o={q:q,d:nd.value||'',n:nn.value.trim()},id='l'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts=Date.now();
       send.disabled=true;seal(o).then(function(r){r.ts=ts;return st.put(id,r)}).then(function(){items.push({id:id,ts:ts,q:o.q,d:o.d,n:o.n});render();nq.value='';nn.value='';
         stat.textContent='Delivered. Saved on '+st.where+'.';var m=chat.querySelectorAll('li.me');if(m.length)m[m.length-1].scrollIntoView({block:'nearest'})})
